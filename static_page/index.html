@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Upload</title>
+    <script>
+        function uploadImage() {
+            let fileInput = document.getElementById('fileInput');
+            let file = fileInput.files[0];
+            let reader = new FileReader();
+            
+            reader.onloadend = function() {
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://localhost:3000/upload', true);
+                xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+                xhr.onload = function() {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        console.log('Response:', xhr.responseText);
+                    } else {
+                        console.log('Upload failed. Status:', xhr.status);
+                    }
+                };
+                xhr.onerror = function() {
+                    console.log('Request failed');
+                };
+                xhr.send(reader.result.split(',')[1]); // remove the 'data:...' prefix and send only the base64 string
+            }
+            
+            reader.readAsDataURL(file);
+        }
+    </script>
+</head>
+<body>
+    <input type="file" id="fileInput" accept="image/*">
+    <button onclick="uploadImage()">Upload Image</button>
+</body>
+</html>

@@ -7,8 +7,11 @@ Description: >
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
-  Function:
-    Timeout: 3
+  Api:
+    Cors:
+      AllowMethods: "'GET, POST, PUT, DELETE'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
 
 Resources:
   HelloWorldFunction:
@@ -31,6 +34,7 @@ Resources:
       CodeUri: post_function/
       Handler: app.post_handler
       Runtime: python3.10
+      Timeout: 10
       Architectures:
         - x86_64
       Events:
