@@ -25,7 +25,34 @@ Resources:
           Properties:
             Path: /hello
             Method: get
-
+  PostFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: post_function/
+      Handler: app.post_handler
+      Runtime: python3.10
+      Architectures:
+        - x86_64
+      Events:
+        PostApiEvent:
+          Type: Api
+          Properties:
+            Path: /upload
+            Method: post
+  GetFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: get_function/
+      Handler: app.get_handler
+      Runtime: python3.10
+      Architectures:
+        - x86_64
+      Events:
+        GetApiEvent:
+          Type: Api
+          Properties:
+            Path: /download
+            Method: get
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
