@@ -1,0 +1,12 @@
+https://gist.github.com/wwwwelton/58a8028f278541500c13b62c1d798439
+
+samlocal build --use-container
+
+samlocal deploy --guided
+samlocal deploy 
+
+
+{"message": "hello world"}
+
+http://localhost:4566/restapis/8cilk20v6z/local/_user_request_/hello
+https://8cilk20v6z.execute-api.localhost.localstack.cloud:4566/Prod/hello/
