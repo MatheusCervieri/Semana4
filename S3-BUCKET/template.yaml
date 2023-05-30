@@ -34,7 +34,7 @@ Resources:
       CodeUri: post_function/
       Handler: app.post_handler
       Runtime: python3.10
-      Timeout: 10
+      Timeout: 5
       Architectures:
         - x86_64
       Events:

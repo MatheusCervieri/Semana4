@@ -9,6 +9,12 @@ samlocal deploy
 sam build
 sam local start-api
 
+aws --endpoint-url=http://localhost:4566 s3api create-bucket --bucket bucket
+# Listar arquivos do bucket
+# awslocal s3 ls s3://bucket
+# awslocal s3 rm s3://bucket/his.flac
+# limpar o bucket
+# awslocal s3 rm s3://bucket --recursive
 
 {"message": "hello world"}
 

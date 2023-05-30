@@ -5,6 +5,7 @@ import boto3
 import uuid
 
 def post_handler(event, context):
+    print("Olá, nos estamos usando o S3 dentro do localstack, por isso, você precisa criar um bucket no seu localstack com o nome bucket")
     # get the base64-encoded body
     base64_image = event.get('body', '')
 
@@ -12,16 +13,24 @@ def post_handler(event, context):
     image_data = base64.b64decode(base64_image)
     file_name = f'{uuid.uuid4()}.jpg'   
 
-    
-    # create a boto3 client
-    #s3_connection = boto3.client('s3', endpoint_url='http://localhost:4510')
-
-    # specify your bucket name and generate a unique file name
-     # creates a unique name
-
-    # upload the image to S3
-    #s3_connection.create_bucket(Bucket='mybucket')
-    #s3_connection.upload_fileobj(BytesIO(image_data), 'mybucket', file_name)
+    # Connect to the s3 localstack
+    print("Teste aleatório")
+    print("Chegou aqui!!!")
+    s3 = boto3.client('s3', endpoint_url=("http://host.docker.internal:4566"))
+    bucket_name = "bucket" # replace with your bucket name
+    print("O s3 foi criado com sucesso")
+    # Upload the file
+    upload_bucket = BytesIO(image_data)
+    print("Chegou aqui")
+    try:
+        s3.upload_fileobj(upload_bucket, bucket_name, file_name)
+        print("Put object")
+    except Exception as e:
+        print(e)
+        return {
+            'statusCode': 500,
+            'body': 'Error in uploading image to S3'
+        }
 
     response = {
         'statusCode': 200,
@@ -34,13 +43,8 @@ def post_handler(event, context):
     }
     return response
 
-# Listar arquivos do bucket
-# awslocal s3 ls s3://mybucket
 
-# awslocal s3 rm s3://mybucket/his.flac
 
-# limpar o bucket
-# awslocal s3 rm s3://mybucket --recursive
 
 def create_bucket_if_not_exists(bucket_name):
     s3_client = boto3.client('s3')
