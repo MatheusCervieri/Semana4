@@ -4,27 +4,39 @@ import base64
 import boto3
 import uuid
 
+# Criar um portal estático no S3 que receba um arquivo e armazene-o
+# fazer usando lambda -
+# fazer usando API Gateway
+
+# This is your AWS Lambda function handler.
+# AWS Lambda calls this function with two arguments: event and context.
 def post_handler(event, context):
+
+    # Print out a message indicating that the function is running.
     print("Olá, nos estamos usando o S3 dentro do localstack, por isso, você precisa criar um bucket no seu localstack com o nome bucket")
-    # get the base64-encoded body
+
+    # The event argument is a dictionary that contains information about the request.
+    # This line gets the 'body' field from the event, which in this case is expected to contain a base64-encoded image.
     base64_image = event.get('body', '')
 
-    # decode the image
+    # The image is then decoded from base64 to get the raw image data.
     image_data = base64.b64decode(base64_image)
+
+    # A unique file name for the image is generated using a UUID, with a '.jpg' extension.
     file_name = f'{uuid.uuid4()}.jpg'   
 
-    # Connect to the s3 localstack
-    print("Teste aleatório")
-    print("Chegou aqui!!!")
+    # A boto3 S3 client is created, specifying the endpoint URL for localstack.
     s3 = boto3.client('s3', endpoint_url=("http://host.docker.internal:4566"))
-    bucket_name = "bucket" # replace with your bucket name
-    print("O s3 foi criado com sucesso")
-    # Upload the file
+
+    # The name of the S3 bucket where the image will be uploaded is defined.
+    bucket_name = "bucket" 
+
+    # The image data is prepared for uploading to S3.
     upload_bucket = BytesIO(image_data)
-    print("Chegou aqui")
+
+    # The image is uploaded to S3. If an error occurs during this process, an error message is printed and an HTTP 500 response is returned.
     try:
         s3.upload_fileobj(upload_bucket, bucket_name, file_name)
-        print("Put object")
     except Exception as e:
         print(e)
         return {
@@ -32,6 +44,7 @@ def post_handler(event, context):
             'body': 'Error in uploading image to S3'
         }
 
+    # If the image is uploaded successfully, an HTTP 200 response is returned, with a message indicating the success.
     response = {
         'statusCode': 200,
         'headers': {
@@ -41,7 +54,10 @@ def post_handler(event, context):
         },
         'body': f'Image {file_name} uploaded to S3 successfully'
     }
+
+    # The response dictionary is returned. AWS Lambda will convert this into an HTTP response.
     return response
+
 
 
 

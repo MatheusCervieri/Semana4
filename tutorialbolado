@@ -10,8 +10,11 @@ sam build
 sam local start-api
 
 aws --endpoint-url=http://localhost:4566 s3api create-bucket --bucket bucket
+
 # Listar arquivos do bucket
 # awslocal s3 ls s3://bucket
+# baixar imagem aws --endpoint-url=http://localhost:4566 s3 cp s3://bucket/fb692354-a4c5-4963-8b68-58613e0a6430.jpg ./fb692354-a4c5-4963-8b68-58613e0a6430.jpg
+# substitua por image_name
 # awslocal s3 rm s3://bucket/his.flac
 # limpar o bucket
 # awslocal s3 rm s3://bucket --recursive
