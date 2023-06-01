@@ -1,19 +1,20 @@
 https://gist.github.com/wwwwelton/58a8028f278541500c13b62c1d798439
 
+LOCALSTACK:
 samlocal build --use-container
-
 samlocal deploy --guided
 samlocal deploy 
 
-
+MÁQUINA: 
 sam build
 sam local start-api
 
+Criar bucket S3 na localstac (DEPENDE DO LOCALSTACK):
 aws --endpoint-url=http://localhost:4566 s3api create-bucket --bucket bucket
 
 # Listar arquivos do bucket
 # awslocal s3 ls s3://bucket
-# baixar imagem aws --endpoint-url=http://localhost:4566 s3 cp s3://bucket/fb692354-a4c5-4963-8b68-58613e0a6430.jpg ./fb692354-a4c5-4963-8b68-58613e0a6430.jpg
+# baixar imagem aws --endpoint-url=http://localhost:4566 s3 cp s3://bucket/ab76006e-5710-47a8-8c74-ca9a6bc39495.jpg ./ab76006e-5710-47a8-8c74-ca9a6bc39495.jpg
 # substitua por image_name
 # awslocal s3 rm s3://bucket/his.flac
 # limpar o bucket
